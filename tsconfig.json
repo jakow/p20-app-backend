@@ -4,6 +4,7 @@
         "outDir": "build",
         "sourceMap": true,
         "noImplicitAny": true,
+        "noUnusedLocals": true,
         "module": "commonjs",
         "moduleResolution": "node",
         "target": "es2017",

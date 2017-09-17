@@ -1,5 +1,5 @@
 {
-  "name": "walter-order-svc",
+  "name": "p20-app-backend",
   "version": "0.1.0",
   "description": "Backend for the Poland 2.0 app for user and ticketing services",
   "main": "build/index.js",
