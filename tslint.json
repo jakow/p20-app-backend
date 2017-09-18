@@ -7,6 +7,8 @@
     "jsRules": {
     },
     "rules": {
+        "max-line-length": [true, 120],
+        "ter-max-len": [true, 120],
         "interface-name": [true, "never-prefix"],
         "ter-arrow-parens": [true, "always"],
         "arrow-parens": false,

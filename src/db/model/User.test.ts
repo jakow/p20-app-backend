@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 
 (mongoose as any).Promise = Promise;
 
-import User, { UserSchema } from './User';
+import User, { UserDocument, UserSchema } from './User';
 
 describe('User', () => {
   describe('schema', () => {
@@ -44,6 +44,52 @@ describe('User', () => {
         email: 'johnny.b@goode.com',
       });
       expect(user.save()).to.be.rejected;
+    });
+
+    describe('accessCode', () => {
+      it('gets hashed when created or modified', async () => {
+        const user = new User({
+          firstName: 'Johnny B.',
+          lastName: 'Goode',
+          email: 'johnny.b@goode.com',
+          accessCode: 's3cr3t',
+        });
+        await user.save();
+        expect(user.accessCode).to.not.equal('s3cr3t');
+      });
+
+      it('can be cleared', async () => {
+        const user = new User({
+          firstName: 'Johnny B.',
+          lastName: 'Goode',
+          email: 'johnny.b@goode.com',
+          accessCode: 's3cr3t',
+        });
+        await user.save();
+        user.accessCode = undefined;
+        await user.save();
+        expect(user.accessCode).to.be.undefined;
+      });
+    });
+    describe('verifyAccessCode()', () => {
+      let user: UserDocument;
+      before(async () => {
+        user = new User({
+          firstName: 'Johnny B.',
+          lastName: 'Goode',
+          email: 'johnny.b@goode.com',
+          accessCode: 's3cr3t',
+        });
+        await user.save();
+      });
+
+      it('resolves to true when a correct access code is supplied', async () => {
+        expect(await user.verifyAccessCode('s3cr3t')).to.be.true;
+      });
+
+      it('resolves to false when a wrong access code is supplied', async () => {
+        expect(await user.verifyAccessCode('wrong')).to.be.false;
+      });
     });
   });
 });
