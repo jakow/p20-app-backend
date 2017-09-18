@@ -21,6 +21,10 @@ export interface UserDocument extends Document {
   verifyAccessCode(candidate: string): Promise<boolean>;
 }
 
+export const userSchemaOptions = {
+  discriminatorKey: 'kind',
+};
+
 export const UserSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
@@ -28,7 +32,7 @@ export const UserSchema = new Schema({
   accessCode: String,
   photo: { type: ImageSchema },
 
-});
+}, userSchemaOptions);
 
 UserSchema.pre('save', async function(this: UserDocument, done) {
   if (this.isModified('accessCode') && this.accessCode) {
