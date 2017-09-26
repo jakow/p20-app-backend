@@ -1,4 +1,5 @@
 // tslint:disable:no-magic-numbers
+import { stripIndent } from 'common-tags';
 import * as dotenv from 'dotenv';
 
 const environmentEnvVar = process.env.NODE_ENV;
@@ -9,8 +10,8 @@ if (environment === 'development') {
     const result = dotenv.config();
     if (result.error) { throw new Error('Failed parsing .dotenv'); }
   } catch {
-    // tslint:disable-next-line:max-line-length
-    console.error(`Create a ".env" file to use in development mode. At minimum, it must contain the following environment variables:
+    console.error(stripIndent`Create a ".env" file to use in development mode.
+    At minimum, it must contain the following environment variables:
     HOST
     PORT
     `);
