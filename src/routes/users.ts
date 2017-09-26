@@ -19,7 +19,7 @@ export async function getUser(ctx: Context) {
   }
 }
 
-export const createUser = wrapValidationErrors(async (data: any) => {
+export const createUser = wrapValidationErrors((data: any) => {
   const userData = { ...data, accessCode: generateAccessCode() };
   let user;
   if (data.kind === 'Admin') {
@@ -27,13 +27,12 @@ export const createUser = wrapValidationErrors(async (data: any) => {
   } else {
     user = new User(userData);
   }
-  await user.save();
-  return user;
+  return user.save();
 });
 
-export const updateUser = wrapValidationErrors(async (user: UserDocument, data: any) => {
+export const updateUser = wrapValidationErrors((user: UserDocument, data: any) => {
   Object.assign(user, data);
-  return await user.save();
+  return user.save();
 });
 
 function createUserRequest(body: any) {
