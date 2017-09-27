@@ -257,5 +257,46 @@ describe('users route', () => {
       const updatedUser = await User.findById(id) as UserDocument;
       expect(updatedUser.accessCode).to.equal(previousAccessCode); // unchanged
     });
+
+  });
+
+  describe('handleEditEmail', () => {
+    let user: UserDocument;
+    let id: string;
+    before(async () => {
+      user = await users.createUser({
+        firstName: 'Rick',
+        lastName: 'Astley',
+        email: 'rick.astley@hotmail.com',
+      });
+      id = user.id as string;
+    });
+
+    after(async () => {
+      await user.remove();
+    });
+
+    it('changes a value of user\'s email', async () => {
+      const mockContext: any = {
+        params: { id },
+        request: { body: { value: 'rick@astley.com' } },
+        query: {},
+      };
+      await users.handleEditEmail(mockContext);
+      const updatedUser = await User.findById(id) as UserDocument;
+      expect(updatedUser.email).to.equal('rick@astley.com');
+    });
+
+    it('regenerates accessCode when email is change', async () => {
+      const previousAccessCode = user.accessCode;
+      const mockContext: any = {
+        params: { id },
+        request: { body: { value: 'another@email.com' } },
+        query: {},
+      };
+      await users.handleEditEmail(mockContext);
+      const updatedUser = await User.findById(id) as UserDocument;
+      expect(updatedUser.accessCode).to.not.equal(previousAccessCode); // unchanged
+    });
   });
 });
