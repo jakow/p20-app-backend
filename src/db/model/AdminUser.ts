@@ -18,8 +18,7 @@ export const AdminUserSchema = new Schema({
 }, userSchemaOptions);
 
 AdminUserSchema.pre('save', async function(this: AdminUserDocument, done) {
-  if (this.isModified('password')) {
-    // if fails, should panic
+  if (this.isModified('password') && this.password !== '') {
     this.password = await encryptPassword(this.password);
   }
   done();

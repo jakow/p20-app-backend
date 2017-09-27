@@ -1,0 +1,39 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Mocha tests",
+        "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+        "args": [
+          "-r", "ts-node/register",
+          "-r", "source-map-support/register",
+          "-r", "test/setup.ts",
+          "--timeout",
+          "120000",
+          "--colors",
+          "**/*.test.ts"
+        ],
+        "internalConsoleOptions": "openOnSessionStart",
+        "sourceMaps": true
+      },
+      {
+        "type": "node",
+        "request": "attach",
+        "restart": true,
+        "name": "Attach",
+        "port": 9229
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch",
+        "restart": true,
+        "program": "${workspaceRoot}/build/index.js",
+        "outFiles": [
+          "${workspaceRoot}/out/**/*.js"
+        ]
+      }
+    ]
+  }
