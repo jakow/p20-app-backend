@@ -17,9 +17,27 @@
     "serve": "nodemon --inspect build/index.js",
     "develop": "cross-env NODE_ENV='development' concurrently \"yarn watch\" \"yarn serve\" --names \"tsc,server\"",
     "clean": "rimraf build",
-    "test": "mocha -r ts-node/register -r source-map-support/register -r test/setup.ts \"src/**/*.test.ts\"",
+    "test": "nyc mocha --timeout 120000 -r ts-node/register -r source-map-support/register -r test/setup.ts \"src/**/*.test.ts\"",
     "lint": "tslint --type-check -p tsconfig.json -c tslint.json",
     "precommit": "yarn lint"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.spec.ts",
+      "**/*.test.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "devDependencies": {
     "@types/bcrypt": "^1.0.0",
@@ -42,7 +60,9 @@
     "concurrently": "^3.5.0",
     "husky": "^0.14.3",
     "mocha": "^3.5.0",
+    "mockgoose": "^7.3.3",
     "nodemon": "^1.12.0",
+    "nyc": "^11.2.1",
     "rimraf": "^2.6.1",
     "sinon": "^3.2.1",
     "source-map-support": "^0.4.18",

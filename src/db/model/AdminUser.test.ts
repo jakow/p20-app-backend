@@ -18,34 +18,36 @@ describe('AdminUser', () => {
       await mongoose.connection.close();
     });
 
+    let admin: AdminUserDocument;
+
     it('requires a password', () => {
-      const admin = new AdminUser({
+      admin = new AdminUser({
         firstName, lastName, email, // no password
       });
       expect(admin.save()).to.be.rejected;
     });
 
-    it('can be saved when password is provided', () => {
-      const admin = new AdminUser({
-        firstName: 'Miles',
-        lastName: 'Davis',
-        email: 'miles@davis.com',
-        password: 'correct-horse-battery-staple',
-      });
-      expect(admin.save()).to.be.fulfilled;
+    it('can be saved when password is provided', async () => {
+      admin = new AdminUser({ firstName, lastName, email, password });
+      expect(async () => await admin.save()).not.to.throw;
+      await admin.remove();
     });
 
     it('hashes the passwords', async () => {
-      const admin = new AdminUser({ firstName, lastName, email, password });
+      admin = new AdminUser({ firstName, lastName, email, password });
       await admin.save();
       expect(admin.password).to.not.equal(password);
+      await admin.remove();
     });
 
     describe('verifyPassword()', () => {
-      let admin: AdminUserDocument;
       before(async () => {
         admin = new AdminUser({ firstName, lastName, email, password });
         await admin.save();
+      });
+
+      after(async () => {
+        await admin.remove();
       });
 
       it('resolves to true if a correct password is supplied', async () => {
@@ -53,7 +55,7 @@ describe('AdminUser', () => {
       });
 
       it('resolves to false if an incorrect password is supplied', async () => {
-        expect(await admin.verifyPassword('incorrect-battery-paperclip-donkey')).to.be.false;
+        expect(await admin.verifyPassword('wrong')).to.be.false;
       });
 
     });

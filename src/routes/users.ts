@@ -1,36 +1,30 @@
 import { CREATED, FORBIDDEN, NO_CONTENT, NOT_FOUND } from 'http-status-codes';
 import { Context } from 'koa';
-import { omit } from 'lodash';
+import { omit, pick } from 'lodash';
 
 import AdminUser from '../db/model/AdminUser';
 import User, { UserDocument, UserObject } from '../db/model/User';
+import { RawDocument } from '../db/types';
 
 import { generateAccessCode } from '../lib/access-codes';
 import { wrapValidationErrors } from './errors';
 
 const DEFAULT_RESULTS_PER_PAGE = 25;
 
-export async function getUser(ctx: Context) {
-  const user = await User.findById(ctx.params.id).exec();
-  if (user) {
-    // pluck login data from the response
-    const { accessCode, password, ...response } = user.toObject() as any;
-    ctx.body = response;
-  }
-}
-
-export const createUser = wrapValidationErrors((data: any) => {
+export const createUser = wrapValidationErrors((data: Partial<UserObject>) => {
   const userData = { ...data, accessCode: generateAccessCode() };
   let user;
-  if (data.kind === 'Admin') {
-    user = new AdminUser(userData);
-  } else {
-    user = new User(userData);
+  switch (userData.kind) {
+    case 'Admin':
+      user = new AdminUser(userData);
+      break;
+    default:
+      user = new User(userData);
   }
   return user.save();
 });
 
-export const updateUser = wrapValidationErrors((user: UserDocument, data: any) => {
+export const updateUser = wrapValidationErrors((user: UserDocument, data: Partial<UserObject>) => {
   Object.assign(user, data);
   return user.save();
 });
@@ -41,17 +35,14 @@ function createUserRequest(body: any) {
 }
 
 function createUserResponse(u: UserDocument) {
-  return omit(u.toObject(), 'accessCode', 'password') as Partial<UserObject>;
+  const data = omit(u.toJSON(), 'accessCode', 'password') as Partial<UserObject> & RawDocument;
+  data._id = data._id.toString();
+  return data;
 }
 
 function createUserQuery(queryObject: any) {
   const permittedQueryParams = ['firstName', 'lastName', 'email', 'kind'];
-  const q: {[k: string]: string} = {};
-  for (const [k, v] of Object.entries(queryObject)) {
-    if (permittedQueryParams.includes(k)) {
-      q[k] = v;
-    }
-  }
+  const q = pick(queryObject, ...permittedQueryParams);
   return q;
 }
 
