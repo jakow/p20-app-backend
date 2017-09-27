@@ -257,7 +257,6 @@ describe('users route', () => {
       const updatedUser = await User.findById(id) as UserDocument;
       expect(updatedUser.accessCode).to.equal(previousAccessCode); // unchanged
     });
-
   });
 
   describe('handleEditEmail', () => {

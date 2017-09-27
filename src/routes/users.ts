@@ -84,7 +84,7 @@ export async function handleDeleteUser(ctx: Context) {
 }
 
 export async function handleEditField(ctx: Context) {
-  const editableFields = ['firstName', 'lastName'];
+  const editableFields = ['firstName', 'lastName', 'password'];
   const field: string = ctx.params.field;
   const value = ctx.request.body.value;
   if (!editableFields.includes(field)) {
