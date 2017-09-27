@@ -287,7 +287,7 @@ describe('users route', () => {
       expect(updatedUser.email).to.equal('rick@astley.com');
     });
 
-    it('regenerates accessCode when email is change', async () => {
+    it('regenerates accessCode when email is changed', async () => {
       const previousAccessCode = user.accessCode;
       const mockContext: any = {
         params: { id },
