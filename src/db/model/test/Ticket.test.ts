@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { Schema } from 'mongoose';
 
-import { TicketSchema } from './Ticket';
+import { TicketSchema } from '../Ticket';
 
 describe('Ticket', () => {
   describe('schema', () => {
