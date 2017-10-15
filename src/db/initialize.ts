@@ -4,6 +4,9 @@ import { getAll } from '../lib/ticketbase';
 import Order, { OrderObject } from './model/Order';
 import Ticket, { TicketObject } from './model/Ticket';
 
+const MS_PER_MINUTE = 60000;
+const SYNC_INTERVAL = MS_PER_MINUTE * 10;
+
 (mongoose as any).Promise = Promise;
 
 export async function initializeDb() {
@@ -12,7 +15,13 @@ export async function initializeDb() {
       useMongoClient: true,
     }).then(() => res(mongoose.connection));
   });
-  syncWithTicketbase();
+
+  periodicSync();
+
+  async function periodicSync() {
+    await syncWithTicketbase();
+    setTimeout(periodicSync, SYNC_INTERVAL);
+  }
 }
 
 async function syncWithTicketbase() {
