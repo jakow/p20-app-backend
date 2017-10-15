@@ -12,7 +12,7 @@ before(async () => {
   await storage.prepareStorage();
 });
 
-import User, { UserDocument, UserSchema } from './User';
+import User, { UserDocument, UserSchema } from '../User';
 
 describe('User', () => {
   describe('schema', () => {

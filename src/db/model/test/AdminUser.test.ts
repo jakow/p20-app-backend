@@ -1,7 +1,7 @@
 // tslint:disable:no-unused-expression
 import { expect } from 'chai';
 import * as mongoose from 'mongoose';
-import AdminUser, { AdminUserDocument } from './AdminUser';
+import AdminUser, { AdminUserDocument } from '../AdminUser';
 
 describe('AdminUser', () => {
   describe('model', () => {

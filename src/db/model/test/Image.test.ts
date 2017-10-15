@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { Schema } from 'mongoose';
 
-import { ImageSchema } from './Image';
+import { ImageSchema } from '../Image';
 
 describe('Image', () => {
   describe('schema', () => {
