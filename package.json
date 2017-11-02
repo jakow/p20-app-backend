@@ -11,8 +11,8 @@
     "node": ">=8.4.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV='production' pm2 start build/index.js --name app",
-    "stop": "pm2 stop app && pm2 delete app",
+    "start": "cross-env NODE_ENV='production' pm2 start build/index.js --name api",
+    "stop": "pm2 stop app && pm2 delete api",
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "nodemon --inspect build/index.js",
