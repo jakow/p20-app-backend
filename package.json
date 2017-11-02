@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV='production' pm2 start build/index.js --name api",
-    "stop": "pm2 stop app && pm2 delete api",
+    "stop": "pm2 stop api && pm2 delete api",
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "nodemon --inspect build/index.js",
