@@ -4,19 +4,17 @@ import * as dotenv from 'dotenv';
 
 export const environment = process.env.NODE_ENV || 'development';
 
-if (environment === 'development') {
-  try {
-    const result = dotenv.config();
+try {
+  const result = dotenv.config();
 
-    if (result.error) { throw new Error('Failed parsing .dotenv'); }
-  } catch {
-    console.error(stripIndent`Create a ".env" file to use in development mode.
-    At minimum, it must contain the following environment variables:
-    HOST
-    PORT
-    `);
-    process.exit(1);
-  }
+  if (result.error) { throw new Error('Failed parsing .dotenv'); }
+} catch {
+  console.error(stripIndent`Create a ".env" file to use in development mode.
+  At minimum, it must contain the following environment variables:
+  HOST
+  PORT
+  `);
+  process.exit(1);
 }
 
 export const PORT = parseInt(process.env.PORT as string, 10) || 5000;
