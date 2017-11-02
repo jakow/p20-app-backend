@@ -11,8 +11,8 @@
     "node": ">=8.4.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV='production' pm2 start build/index.js --name api",
-    "stop": "pm2 stop api && pm2 delete api",
+    "start": "pm2 update && cross-env NODE_ENV='production' pm2 start build/index.js --name api",
+    "stop": "pm2 update && pm2 stop --silent api && pm2 delete --silent api",
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "nodemon --inspect build/index.js",
@@ -73,7 +73,7 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
     "tslint-config-airbnb-base": "^0.1.0",
-    "typescript": "^2.5.2"
+    "typescript": "^2.6.1"
   },
   "dependencies": {
     "axios": "^0.16.2",
