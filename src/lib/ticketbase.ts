@@ -15,7 +15,7 @@ export function toOrderObject(o: any): OrderObject {
 export function toTicketObject(o: any): TicketObject {
   const camelCased = toCamelCaseObject(o);
   parseDates(camelCased);
-  return omit(camelCased, 'order'); // replacing order with a Order document referene
+  return omit(camelCased, 'order') as TicketObject; // replacing order with a Order document referene
 }
 
 interface ResourceMap {

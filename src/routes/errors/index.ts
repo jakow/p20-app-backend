@@ -3,12 +3,14 @@ import { FORBIDDEN, UNAUTHORIZED, UNPROCESSABLE_ENTITY } from 'http-status-codes
 import { Context } from 'koa';
 import { pick } from 'lodash';
 
+interface ValidationErrorInfo {
+  path: string;
+  kind: string;
+  reason: string;
+}
+
 interface ValidationErrorMap {
-  [key: string]: {
-    path: string;
-    kind: string;
-    reason: string;
-  };
+  [key: string]: ValidationErrorInfo;
 }
 
 export class ValidationError extends Error {
@@ -16,7 +18,7 @@ export class ValidationError extends Error {
   public static fromMongooseValidationErrors(errorObject: any) {
     const errors: ValidationErrorMap = {};
     for (const [key, value] of Object.entries(errorObject)) {
-      errors[key] = pick(value, 'path', 'kind', 'reason');
+      errors[key] = pick(value, 'path', 'kind', 'reason') as ValidationErrorInfo;
     }
     return new ValidationError(errors);
   }
