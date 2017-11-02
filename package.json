@@ -11,7 +11,8 @@
     "node": ">=8.4.0"
   },
   "scripts": {
-    "start": "node build/index.js",
+    "start": "cross-env NODE_ENV='production' pm2 start build/index.js --name app",
+    "stop": "pm2 stop app && pm2 delete app",
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "nodemon --inspect build/index.js",
@@ -19,8 +20,8 @@
     "clean": "rimraf build",
     "test": "nyc mocha --timeout 120000 -r ts-node/register -r source-map-support/register -r test/setup.ts \"src/**/*.test.ts\"",
     "coverage": "open coverage/index.html",
-    "lint": "tslint --type-check -p tsconfig.json -c tslint.json",
-    "precommit": "yarn lint"
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "precommit": "npm run lint"
   },
   "nyc": {
     "extension": [
@@ -88,6 +89,7 @@
     "koa-router": "^7.2.1",
     "lodash": "^4.17.4",
     "mongoose": "^4.11.11",
+    "pm2": "^2.7.2",
     "shortid": "^2.2.8"
   }
 }

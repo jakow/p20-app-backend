@@ -9,6 +9,10 @@ import {
   handleGetUsers,
 } from './users';
 
+import {
+  handleValidateTicket,
+} from './tickets';
+
 const router = new Router();
 router.use(processErrors);
 router.get('/users', handleGetUsers);
@@ -19,5 +23,8 @@ router.delete('/users/:id', handleDeleteUser);
 // editing fields
 router.put('/users/:id/email', handleEditEmail);
 router.put('/users/:id/:field', handleEditField);
+
+// tickets
+router.post('/tickets/validate', handleValidateTicket);
 
 export default router;

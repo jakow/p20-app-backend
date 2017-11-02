@@ -23,8 +23,6 @@ interface ResourceMap {
   tickets: TicketObject;
 }
 
-type ResourceMapper<T extends keyof ResourceMap> = (o: any) => ResourceMap[T];
-
 const mapper = {
   orders: toOrderObject,
   tickets: toTicketObject,
@@ -40,7 +38,7 @@ export async function* getAll<T extends keyof ResourceMap>(
   tbConfig: TicketbaseConfig): AsyncIterableIterator<ResourceMap[T]> {
   const query = {
     api_key: tbConfig.apiKey,
-    page: 0,
+    page: 1, // pages start at 1 in the API
     per_page: 100,
   };
 
@@ -48,13 +46,11 @@ export async function* getAll<T extends keyof ResourceMap>(
     const qs = queryString.stringify(query);
     const url = `https://api.ticketbase.com/v1/events/${tbConfig.eventId}/${resource}.json?${qs}`;
     const { data } = await axios.get(url);
-
     if (!Array.isArray(data)) {
       throw new TypeError('Invalid response received');
     }
-    const orders = data.map(mapper[resource] as ResourceMapper<T>);
+    const orders = data.map(mapper[resource] as (o: any) => ResourceMap[T]);
     yield* orders;
-
     if (orders.length < query.per_page) {
       return;
     }
