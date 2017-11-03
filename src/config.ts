@@ -17,7 +17,7 @@ try {
   process.exit(1);
 }
 
-export const PORT = parseInt(process.env.PORT as string, 10) || 5000;
+export const PORT = 5000;
 
 const hostEnvVar = process.env.HOST;
 export const HOST = hostEnvVar == null ? 'localhost' : hostEnvVar;
