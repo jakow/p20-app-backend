@@ -16,7 +16,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "serve": "nodemon --inspect build/index.js",
-    "develop": "cross-env NODE_ENV='development' concurrently \"yarn watch\" \"yarn serve\" --names \"tsc,server\"",
+    "develop": "cross-env NODE_ENV='development' concurrently \"npm run watch\" \"npm run serve\" --names \"tsc,server\"",
     "clean": "rimraf build",
     "test": "nyc mocha --timeout 120000 -r ts-node/register -r source-map-support/register -r test/setup.ts \"src/**/*.test.ts\"",
     "coverage": "open coverage/index.html",

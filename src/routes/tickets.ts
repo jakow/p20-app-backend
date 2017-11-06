@@ -1,5 +1,7 @@
-import { NOT_FOUND } from 'http-status-codes';
+import axios from 'axios';
+import { NOT_FOUND, OK } from 'http-status-codes';
 import { Context } from 'koa';
+import { TICKETBASE_API_KEY, TICKETBASE_EVENT_ID } from '../config';
 import Ticket from '../db/model/Ticket';
 
 interface TicketQuery {
@@ -22,5 +24,27 @@ export async function handleValidateTicket(ctx: Context) {
     ctx.status = NOT_FOUND;
   } else {
     ctx.body = ticket.toJSON();
+  }
+}
+
+export async function getAvailableTickets() {
+  const url = `https://api.ticketbase.com/v1/events/${TICKETBASE_EVENT_ID}/tickets.json?` +
+    `api_key=${TICKETBASE_API_KEY}`;
+  const response = await axios.get(url);
+  const tickets = response.status === OK ? response.data : [];
+  return tickets;
+}
+
+export async function handleGetTicketAvailability(ctx: Context) {
+  const availableTickets = await getAvailableTickets();
+  if (availableTickets.length > 0) {
+    ctx.body = {
+      available: true,
+      url: `https://www.ticketbase.com/events/${TICKETBASE_EVENT_ID}`,
+    };
+  } else {
+    ctx.body = {
+      available: false,
+    };
   }
 }

@@ -10,6 +10,7 @@ import {
 } from './users';
 
 import {
+  handleGetTicketAvailability,
   handleValidateTicket,
 } from './tickets';
 
@@ -26,5 +27,6 @@ router.put('/users/:id/:field', handleEditField);
 
 // tickets
 router.post('/tickets/validate', handleValidateTicket);
+router.get('/tickets/availability', handleGetTicketAvailability);
 
 export default router;
