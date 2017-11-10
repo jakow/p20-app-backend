@@ -11,7 +11,7 @@ export interface TicketObject {
   void: boolean;
   ticketType: string;
   ticketTypeId: number;
-  order: OrderDocument;
+  order?: OrderDocument;
 }
 
 export type TicketDocument = TicketObject & Document;

@@ -3,6 +3,7 @@ import { TICKETBASE_API_KEY, TICKETBASE_EVENT_ID } from '../config';
 import { getAll } from '../lib/ticketbase';
 import Order, { OrderObject } from './model/Order';
 import Ticket, { TicketObject } from './model/Ticket';
+import { testOrders, testTickets } from './tbTestData';
 
 const MS_PER_MINUTE = 60000;
 const SYNC_INTERVAL = MS_PER_MINUTE * 10;
@@ -65,6 +66,10 @@ export async function getTicketbaseData() {
     orders.push(order);
   }
   console.info(`[Ticketbase] ${orders.length} orders found.`);
+
+  // initialize test data
+  orders.push(...testOrders);
+  tickets.push(...testTickets);
 
   return {
     orders,
